@@ -6,7 +6,7 @@ model PartialZone "Building zone model"
     Eexpr(y=if sim.computeConservationOfEnergy then E else 0),
     useOccNumInput=occNum.useInput,
     useLigCtrInput=ligCtr.useCtrInput);
-
+  parameter Real elevation(unit="m") = 0 annotation(Dialog(tab="General"));
   parameter Real n50(min=0.01)= 0.4
     "n50 value cfr airtightness, i.e. the ACH at a pressure diffence of 50 Pa"
     annotation(Dialog(group="Building physics"));
@@ -220,6 +220,7 @@ equation
       This may be unintended.", AssertionLevel.warning);
   end if;
 
+  propsBusInt.elevation = elevation;
 
   for i in 1:nSurf loop
     connect(dummy1, propsBusInt[i].Qgai);

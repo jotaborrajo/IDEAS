@@ -33,6 +33,11 @@ connector ZoneBus
     final quantity="Angle",
     final unit="rad",
     displayUnit="deg") annotation ();
+  Modelica.Fluid.Interfaces.FluidPort_a inf[if inc == 0 then 1 else 2] annotation ();
+  Modelica.Fluid.Interfaces.FluidPort_a ope[if inc == 0 then 1 else 2] annotation ();
+  IDEAS.Buildings.Components.Interfaces.RealConnector elevation(
+    final quantity="Height",
+    final unit="m") annotation ();
 
   annotation (Documentation(info="<html>
 <p>
@@ -60,4 +65,5 @@ Revised documentation for IDEAS 1.0.
 </li>
 </ul>
 </html>"));
+
 end ZoneBus;

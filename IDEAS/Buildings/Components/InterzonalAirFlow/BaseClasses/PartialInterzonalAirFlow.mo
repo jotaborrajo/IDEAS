@@ -1,8 +1,11 @@
 within IDEAS.Buildings.Components.InterzonalAirFlow.BaseClasses;
 partial model PartialInterzonalAirFlow "Partial for interzonal air flow"
   replaceable package Medium = IDEAS.Media.Air "Air medium";
-  parameter Integer nPorts "Number of ports for connection to zone air volume";
+  parameter Integer nPorts =  nPortsExt + nPortsInf + nPortsOpe
+                                                               "Number of ports for connection to zone air volume";
   parameter Integer nPortsExt "Number of ports for connection to zone air volume";
+  parameter Integer nPortsInf "Number of ports for infiltration";
+  parameter Integer nPortsOpe "Number of ports for openings";
   parameter Modelica.SIunits.Volume V "Zone air volume for n50 computation";
   parameter Real n50 "n50 value";
   parameter Real n50toAch = 20
@@ -60,9 +63,27 @@ partial model PartialInterzonalAirFlow "Partial for interzonal air flow"
         rotation=90,
         origin={0,100})));
 
+  Modelica.Fluid.Interfaces.FluidPorts_a[nPorts] portsInf(
+    redeclare each package Medium = Medium,
+    each m_flow(nominal=m_flow_nominal_vent),
+    each h_outflow(nominal=Medium.h_default)) "Fluid ports for infiltration"
+    annotation (Placement(transformation(
+        extent={{-9,32},{9,-32}},
+        rotation=180,
+        origin={-99,-52})));
+  Modelica.Fluid.Interfaces.FluidPorts_a[nPorts] portsOpe(
+    redeclare each package Medium = Medium,
+    each m_flow(nominal=m_flow_nominal_vent),
+    each h_outflow(nominal=Medium.h_default)) "Fluid ports for openings"
+    annotation (Placement(transformation(
+        extent={{-9,32},{9,-32}},
+        rotation=180,
+        origin={-99,40})));
 equation
-  connect(ports[1+nPorts-nPortsExt:nPorts], portsExt[1:nPortsExt]) annotation (Line(points={{2,-100},{0,-100},{0,100},{0,
+  connect(ports[1:nPortsExt], portsExt[1:nPortsExt]) annotation (Line(points={{2,-100},{0,-100},{0,100},{0,
           100}}, color={0,127,255}));
+  connect(ports[1+nPortsExt:1+nPortsExt+nPortsInf], portsInf[1:nPortsInf]) annotation (Line(points={{2,-100},{2,-52},{-99,-52}}, color={0,127,255}));
+  connect(ports[2+nPortsExt+nPortsInf:2+nPortsExt+nPortsInf+nPortsOpe], portsOpe[1:nPortsOpe]) annotation (Line(points={{2,-100},{2,40},{-99,40}}, color={0,127,255}));
 
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(

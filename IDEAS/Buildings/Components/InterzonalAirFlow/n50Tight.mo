@@ -18,7 +18,7 @@ equation
   connect(airExfiltration.port_b, bou.ports[2])
     annotation (Line(points={{10,-40},{10,0},{-1.77636e-15,0}},
                                                       color={0,127,255}));
-  connect(airExfiltration.port_a, ports[2]) annotation (Line(points={{10,-60},{
+  connect(airExfiltration.port_a, ports[nPorts]) annotation (Line(points={{10,-60},{
           10,-100},{2,-100},{2,-100}},
                                     color={0,127,255}));
   annotation (Documentation(revisions="<html>
