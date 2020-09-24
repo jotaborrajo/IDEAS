@@ -71,9 +71,8 @@ model PartialZone "Building zone model"
     annotation (choicesAllMatching=true,
     Placement(transformation(extent={{-40,20},{-20,40}})),
     Dialog(tab="Advanced",group="Air model"));
-  replaceable IDEAS.Buildings.Components.InterzonalAirFlow.n50Tight interzonalAirFlow
-  constrainedby
-    IDEAS.Buildings.Components.InterzonalAirFlow.BaseClasses.PartialInterzonalAirFlow(
+  replaceable IDEAS.Buildings.Components.InterzonalAirFlow.n50Tight interzonalAirFlow(                                                nPortsInf=sum(propsBusInt[1:nSurf].size), nPortsOpe=sum(propsBusInt[1:nSurf].size))
+  constrainedby IDEAS.Buildings.Components.InterzonalAirFlow.BaseClasses.PartialInterzonalAirFlow(
       redeclare package Medium = Medium,
       final nPortsExt=nPorts,
       V=V,
@@ -220,7 +219,7 @@ equation
       This may be unintended.", AssertionLevel.warning);
   end if;
 
-  propsBusInt.elevation = elevation;
+  propsBusInt.elevation = elevation*ones(nSurf);
 
   for i in 1:nSurf loop
     connect(dummy1, propsBusInt[i].Qgai);
@@ -391,6 +390,21 @@ end for;
     annotation (Line(points={{58,62},{41,62}}, color={0,0,127}));
   connect(interzonalAirFlow.portsExt, ports) annotation (Line(points={{-30,80},{
           -30,90},{0,90},{0,100}}, color={0,127,255}));
+
+  connect(interzonalAirFlow.portsOpe[1:6],propsBusInt[1:6].ope[1]);
+  connect(interzonalAirFlow.portsInf[1:6],propsBusInt[1:6].inf[1]);
+    connect(interzonalAirFlow.portsOpe[7:12],propsBusInt[1:6].ope[2]);
+  connect(interzonalAirFlow.portsInf[7:12],propsBusInt[1:6].inf[2]);
+
+ /*         
+  connect(interzonalAirFlow.portsOpe[1:propsBusInt[1].size],propsBusInt.ope[:]);
+  connect(interzonalAirFlow.portsInf[1:propsBusInt[1].size],propsBusInt.inf[:]);
+  for i in 2:nSurf loop
+    connect(interzonalAirFlow.portsOpe[sum(propsBusInt[1:i-1].size):sum(propsBusInt[1:i].size)],propsBusInt.ope[:]);
+    connect(interzonalAirFlow.portsInf[sum(propsBusInt[1:i-1].size):sum(propsBusInt[1:i].size)],propsBusInt.inf[:]);
+  end for;
+  */
+
  annotation (Placement(transformation(extent={{
             140,48},{100,88}})),
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),

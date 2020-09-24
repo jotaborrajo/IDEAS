@@ -5,6 +5,11 @@ partial model PartialSurface "Partial model for building envelope component"
     "Simulation information manager for climate data"
     annotation (Placement(transformation(extent={{30,-100},{50,-80}})));
 
+  replaceable package Medium = IDEAS.Media.Air
+  constrainedby Modelica.Media.Interfaces.PartialMedium
+    "Medium in the component"
+      annotation (choicesAllMatching = true);
+
   parameter Integer incOpt = 4
     "Tilt angle option from simInfoManager, or custom using inc"
     annotation(choices(__Dymola_radioButtons=true, choice=1 "Wall", choice=2 "Floor", choice=3 "Ceiling", choice=4 "Custom"));
@@ -70,6 +75,7 @@ partial model PartialSurface "Partial model for building envelope component"
     "Multilayer component for simulating walls, windows and other surfaces"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}})));
 
+  Fluid.Sources.Outside out(redeclare package Medium = Medium, nPorts=if inc == 0 then 2 else 4) annotation (Placement(transformation(extent={{58,68},{78,88}})));
 protected
   final parameter Modelica.SIunits.Angle aziInt=
     if aziOpt==5
@@ -159,6 +165,18 @@ equation
       points={{70,20.2105},{60,20.2105},{60,20},{56,20}},
       color={255,204,51},
       thickness=0.5));
+  connect(out.weaBus, sim.weaDatBus) annotation (Line(
+      points={{58,78.2},{38,78.2},{38,-90},{49.9,-90}},
+      color={255,204,51},
+      thickness=0.5));
+  connect(out.ports[1], propsBus_a.inf[1]) annotation (Line(points={{78,78},{100.1,78},{100.1,19.9}}, color={0,127,255}));
+  connect(out.ports[2], propsBus_a.ope[1]) annotation (Line(points={{78,78},{100.1,78},{100.1,19.9}}, color={0,127,255}));
+
+  if inc <> 0 or inc <> IDEAS.Types.Tilt.Ceiling or inc <> IDEAS.Types.Tilt.Floor then
+    connect(out.ports[3], propsBus_a.inf[2]);
+    connect(out.ports[4], propsBus_a.ope[2]);
+  end if;
+
   annotation (
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
             100,100}})),

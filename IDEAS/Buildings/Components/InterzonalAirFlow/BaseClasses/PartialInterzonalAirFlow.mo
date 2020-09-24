@@ -63,7 +63,7 @@ partial model PartialInterzonalAirFlow "Partial for interzonal air flow"
         rotation=90,
         origin={0,100})));
 
-  Modelica.Fluid.Interfaces.FluidPorts_a[nPorts] portsInf(
+  Modelica.Fluid.Interfaces.FluidPorts_a[nPortsInf] portsInf(
     redeclare each package Medium = Medium,
     each m_flow(nominal=m_flow_nominal_vent),
     each h_outflow(nominal=Medium.h_default)) "Fluid ports for infiltration"
@@ -71,7 +71,7 @@ partial model PartialInterzonalAirFlow "Partial for interzonal air flow"
         extent={{-9,32},{9,-32}},
         rotation=180,
         origin={-99,-52})));
-  Modelica.Fluid.Interfaces.FluidPorts_a[nPorts] portsOpe(
+  Modelica.Fluid.Interfaces.FluidPorts_a[nPortsOpe] portsOpe(
     redeclare each package Medium = Medium,
     each m_flow(nominal=m_flow_nominal_vent),
     each h_outflow(nominal=Medium.h_default)) "Fluid ports for openings"
@@ -82,9 +82,9 @@ partial model PartialInterzonalAirFlow "Partial for interzonal air flow"
 equation
   connect(ports[1:nPortsExt], portsExt[1:nPortsExt]) annotation (Line(points={{2,-100},{0,-100},{0,100},{0,
           100}}, color={0,127,255}));
-  connect(ports[1+nPortsExt:1+nPortsExt+nPortsInf], portsInf[1:nPortsInf]) annotation (Line(points={{2,-100},{2,-52},{-99,-52}}, color={0,127,255}));
-  connect(ports[2+nPortsExt+nPortsInf:2+nPortsExt+nPortsInf+nPortsOpe], portsOpe[1:nPortsOpe]) annotation (Line(points={{2,-100},{2,40},{-99,40}}, color={0,127,255}));
-
+  connect(ports[(1+nPortsExt):(nPortsExt+nPortsInf)], portsInf[1:nPortsInf]) annotation (Line(points={{2,-100},{2,-52},{-99,-52}}, color={0,127,255}));
+  connect(ports[1+nPortsExt+nPortsInf:nPortsExt+nPortsInf+nPortsOpe], portsOpe[1:nPortsOpe]) annotation (Line(points={{2,-100},{2,40},{-99,40}}, color={0,127,255}));
+  //connect(ports[15:26], portsOpe[1:12])
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-15,80},{15,-80}},
