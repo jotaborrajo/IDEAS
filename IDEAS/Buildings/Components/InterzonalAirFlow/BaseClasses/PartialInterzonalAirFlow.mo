@@ -82,7 +82,7 @@ partial model PartialInterzonalAirFlow "Partial for interzonal air flow"
 equation
   connect(ports[1:nPortsExt], portsExt[1:nPortsExt]) annotation (Line(points={{2,-100},{0,-100},{0,100},{0,
           100}}, color={0,127,255}));
-  connect(ports[(1+nPortsExt):(nPortsExt+nPortsInf)], portsInf[1:nPortsInf]) annotation (Line(points={{2,-100},{2,-52},{-99,-52}}, color={0,127,255}));
+  connect(ports[1+nPortsExt:nPortsExt+nPortsInf], portsInf[1:nPortsInf]) annotation (Line(points={{2,-100},{2,-52},{-99,-52}}, color={0,127,255}));
   connect(ports[1+nPortsExt+nPortsInf:nPortsExt+nPortsInf+nPortsOpe], portsOpe[1:nPortsOpe]) annotation (Line(points={{2,-100},{2,40},{-99,40}}, color={0,127,255}));
   //connect(ports[15:26], portsOpe[1:12])
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={

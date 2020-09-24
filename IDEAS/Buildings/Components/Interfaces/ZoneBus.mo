@@ -5,7 +5,7 @@ connector ZoneBus
     "Number of calculated azimuth angles, set to sim.numIncAndAziInBus";
   parameter Boolean outputAngles = true "Set to false when linearising in Dymola only";
   //parameter Integer size = if inc == 0 or inc == IDEAS.Types.Tilt.Ceiling or inc == IDEAS.Types.Tilt.Floor then 1 else 2;
-  parameter Integer size= 2;
+  //parameter Integer size= 2;
   IDEAS.Buildings.Components.Interfaces.RealConnector QTra_design(
     final quantity="Power",
     final unit="W") annotation ();
@@ -34,8 +34,8 @@ connector ZoneBus
     final quantity="Angle",
     final unit="rad",
     displayUnit="deg") annotation ();
-  Modelica.Fluid.Interfaces.FluidPort_a inf[size](replaceable package Medium = IDEAS.Media.Air) annotation ();
-  Modelica.Fluid.Interfaces.FluidPort_a ope[size](replaceable package Medium = IDEAS.Media.Air) annotation ();
+  Modelica.Fluid.Interfaces.FluidPort_a inf(replaceable package Medium = IDEAS.Media.Air) annotation ();
+  Modelica.Fluid.Interfaces.FluidPort_a ope(replaceable package Medium = IDEAS.Media.Air) annotation ();
   IDEAS.Buildings.Components.Interfaces.RealConnector elevation(
     final quantity="Height",
     final unit="m") annotation ();

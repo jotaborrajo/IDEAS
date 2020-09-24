@@ -3,7 +3,7 @@ partial model PartialInterzonalAirFlown50
   "Model representing idealised n50 air leakage"
   extends
     IDEAS.Buildings.Components.InterzonalAirFlow.BaseClasses.PartialInterzonalAirFlowBoundary(
-      nPorts= nPortsExt + nPortsInf + nPortsOpe + 2, bou(nPorts=2));
+      nPorts= nPortsExt + nPortsInf  + 2, bou(nPorts=2));
 
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal_airLea=
     V*rho_default/3600*n50/n50toAch

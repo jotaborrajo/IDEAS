@@ -75,7 +75,15 @@ partial model PartialSurface "Partial model for building envelope component"
     "Multilayer component for simulating walls, windows and other surfaces"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}})));
 
-  Fluid.Sources.Outside out(redeclare package Medium = Medium, nPorts=if inc == 0 then 2 else 4) annotation (Placement(transformation(extent={{58,68},{78,88}})));
+  Fluid.Sources.Boundary_pT boundary1(redeclare package Medium = Medium, nPorts=2) annotation (Placement(transformation(extent={{-28,48},{-8,68}})));
+  Fluid.FixedResistances.PressureDrop res(
+    redeclare package Medium = Medium,
+    m_flow_nominal=0.1,
+    dp_nominal=1) annotation (Placement(transformation(extent={{18,46},{38,66}})));
+  Fluid.FixedResistances.PressureDrop res1(
+    redeclare package Medium = Medium,
+    m_flow_nominal=0.1,
+    dp_nominal=1) annotation (Placement(transformation(extent={{18,66},{38,86}})));
 protected
   final parameter Modelica.SIunits.Angle aziInt=
     if aziOpt==5
@@ -165,18 +173,17 @@ equation
       points={{70,20.2105},{60,20.2105},{60,20},{56,20}},
       color={255,204,51},
       thickness=0.5));
-  connect(out.weaBus, sim.weaDatBus) annotation (Line(
-      points={{58,78.2},{38,78.2},{38,-90},{49.9,-90}},
-      color={255,204,51},
-      thickness=0.5));
-  connect(out.ports[1], propsBus_a.inf[1]) annotation (Line(points={{78,78},{100.1,78},{100.1,19.9}}, color={0,127,255}));
-  connect(out.ports[2], propsBus_a.ope[1]) annotation (Line(points={{78,78},{100.1,78},{100.1,19.9}}, color={0,127,255}));
 
-  if inc <> 0 or inc <> IDEAS.Types.Tilt.Ceiling or inc <> IDEAS.Types.Tilt.Floor then
-    connect(out.ports[3], propsBus_a.inf[2]);
-    connect(out.ports[4], propsBus_a.ope[2]);
+  /*if inc <> 0 or inc <> IDEAS.Types.Tilt.Ceiling or inc <> IDEAS.Types.Tilt.Floor then
+    connect(out.ports[1], propsBus_a.inf[2]);
+    connect(out.ports[2], propsBus_a.ope[2]);
   end if;
+  */
 
+  connect(res.port_b, propsBusInt.inf) annotation (Line(points={{38,56},{56.09,56},{56.09,19.91}}, color={0,127,255}));
+  connect(res.port_a, boundary1.ports[1]) annotation (Line(points={{18,56},{6,56},{6,60},{-8,60}}, color={0,127,255}));
+  connect(res1.port_a, boundary1.ports[2]) annotation (Line(points={{18,76},{10,76},{10,78},{0,78},{0,56},{-8,56}}, color={0,127,255}));
+  connect(res1.port_b, propsBusInt.ope) annotation (Line(points={{38,76},{56.09,76},{56.09,19.91}}, color={0,127,255}));
   annotation (
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
             100,100}})),

@@ -71,11 +71,13 @@ model PartialZone "Building zone model"
     annotation (choicesAllMatching=true,
     Placement(transformation(extent={{-40,20},{-20,40}})),
     Dialog(tab="Advanced",group="Air model"));
-  replaceable IDEAS.Buildings.Components.InterzonalAirFlow.n50Tight interzonalAirFlow(                                                nPortsInf=sum(propsBusInt[1:nSurf].size), nPortsOpe=sum(propsBusInt[1:nSurf].size))
+  replaceable IDEAS.Buildings.Components.InterzonalAirFlow.n50Tight interzonalAirFlow
   constrainedby IDEAS.Buildings.Components.InterzonalAirFlow.BaseClasses.PartialInterzonalAirFlow(
       redeclare package Medium = Medium,
       final nPortsExt=nPorts,
       V=V,
+      nPortsInf=nSurf,
+      nPortsOpe=nSurf,
       n50=n50,
       n50toAch=n50toAch,
       m_flow_nominal_vent=m_flow_nominal)
@@ -391,10 +393,11 @@ end for;
   connect(interzonalAirFlow.portsExt, ports) annotation (Line(points={{-30,80},{
           -30,90},{0,90},{0,100}}, color={0,127,255}));
 
-  connect(interzonalAirFlow.portsOpe[1:6],propsBusInt[1:6].ope[1]);
-  connect(interzonalAirFlow.portsInf[1:6],propsBusInt[1:6].inf[1]);
-    connect(interzonalAirFlow.portsOpe[7:12],propsBusInt[1:6].ope[2]);
-  connect(interzonalAirFlow.portsInf[7:12],propsBusInt[1:6].inf[2]);
+  //connect(interzonalAirFlow.portsOpe[1:6],propsBusInt[1:6].ope[1]);
+  connect(interzonalAirFlow.portsInf[1:nSurf],propsBusInt[1:nSurf].inf);
+  connect(interzonalAirFlow.portsOpe[1:nSurf],propsBusInt[1:nSurf].ope);
+  //  connect(interzonalAirFlow.portsOpe[7:12],propsBusInt[1:6].ope[2]);
+  //connect(interzonalAirFlow.portsInf[7:12],propsBusInt[1:6].inf[2]);
 
  /*         
   connect(interzonalAirFlow.portsOpe[1:propsBusInt[1].size],propsBusInt.ope[:]);

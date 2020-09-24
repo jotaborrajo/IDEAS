@@ -2,7 +2,7 @@ within IDEAS.Buildings.Components.InterzonalAirFlow;
 model AirTight
   "Airtight: Air tight zone without air infiltration"
   extends IDEAS.Buildings.Components.InterzonalAirFlow.BaseClasses.PartialInterzonalAirFlow(
-    nPorts=nPortsExt,
+    nPorts=nPortsInf + nPortsExt + nPortsOpe,
     prescribesPressure=false);
 equation
   connect(port_a_interior, port_b_exterior) annotation (Line(points={{-60,-100},

@@ -103,6 +103,9 @@ equation
           128},{100.1,-0.1}},        color={0,0,127}));
   connect(epsSw.y, propsBus_b.epsSw) annotation (Line(points={{11,98},{100.1,98},
           {100.1,-0.1}}, color={0,0,127}));
+  connect(propsBus_a.inf, propsBus_b.inf);
+  connect(propsBus_a.ope, propsBus_b.ope);
+  connect(propsBus_a.elevation, propsBus_b.elevation);
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-180},
             {100,200}}), graphics={
         Polygon(

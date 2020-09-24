@@ -1,9 +1,6 @@
 within IDEAS.Buildings.Components;
 model Zone "Building zone model"
-  extends IDEAS.Buildings.Components.Interfaces.PartialZone(interzonalAirFlow(
-      nPorts=24,
-      nPortsInf=12,
-      nPortsOpe=12));
+  extends IDEAS.Buildings.Components.Interfaces.PartialZone;
 
   //this propsbus exposes all ports to the outside of the model
   IDEAS.Buildings.Components.Interfaces.ZoneBus[nSurf] propsBus(
